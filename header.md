@@ -21,6 +21,6 @@ module "rundeck" {
 
 ## Examples:
 
-- [default-vpc](https://github.com/rundeck-io/terraform-aws-ec2/tree/master/examples/default-vpc) - Creates Rundeck EC2 instance on Default VPC
+- [default-vpc](https://github.com/rundeck-io/terraform-aws-ec2-rundeck/tree/master/examples/default-vpc) - Creates Rundeck EC2 instance on Default VPC
 
 
