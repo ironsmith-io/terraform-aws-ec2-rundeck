@@ -10,7 +10,7 @@ Terraform module that creates a Rundeck EC2 (spot) instance.
 ```hcl
 
 module "rundeck" {
-  source            = "git@github.com:rundeck-io/terraform-aws-ec2.git"
+  source            = "git@github.com:rundeck-io/terraform-aws-ec2-rundeck.git"
   aws_vpc_id        = data.aws_vpc.default.id
   aws_subnet_id     = data.aws_subnet.default.id
   key_pair_name     = "rundeck-us-west-2"
