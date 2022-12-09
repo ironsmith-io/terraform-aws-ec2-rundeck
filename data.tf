@@ -1,9 +1,10 @@
-# Latest Centos 7 AMI
+# Latest Centos 7 AMI from Centos.org
+# https://centos.org/download/aws-images/
 data "aws_ami" "rundeck" {
   most_recent = true
   owners      = ["125523088429"]
   filter {
     name   = "name"
-    values = ["CentOS 7.9.2009 x86_*"]
+    values = ["CentOS Linux 7 x86_64*"]
   }
 }
