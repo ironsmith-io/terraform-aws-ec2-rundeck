@@ -13,7 +13,7 @@ resource "aws_spot_instance_request" "rundeck" {
 
   root_block_device {
     encrypted             = false
-    volume_size           = 8
+    volume_size           = var.root_volume_size
     delete_on_termination = true
     volume_type           = "gp3"
     tags                  = local.common_tags

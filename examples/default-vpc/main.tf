@@ -7,8 +7,11 @@ module "rundeck" {
   aws_vpc_id     = data.aws_vpc.default.id
   aws_subnet_id  = data.aws_subnet.default.id
   key_pair_name  = "rundeck-us-west-2"
-  ip_allow_ssh   = ["0.0.0.0/0"]
-  ip_allow_https = ["0.0.0.0/0"]
+
+  # OPTIONALS        = default
+  # ip_allow_ssh     = ["0.0.0.0/0"]
+  # ip_allow_https   = ["0.0.0.0/0"]
+  # root_volume_size = 20
 }
 
 data "aws_vpc" "default" {
