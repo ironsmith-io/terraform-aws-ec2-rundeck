@@ -7,3 +7,4 @@ All notable changes to this project will be documented in this file.
 ### Features
 
 * Add support for custom EC2 root volume size via the `root_volume_size` variable.
+* Add support for encrypting EC2 root volume via the `root_encrypted` variable.

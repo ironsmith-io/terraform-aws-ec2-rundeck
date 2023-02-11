@@ -12,7 +12,7 @@ resource "aws_spot_instance_request" "rundeck" {
   user_data                      = file("${path.module}/user_data.sh")
 
   root_block_device {
-    encrypted             = false
+    encrypted             = var.root_encrypted
     volume_size           = var.root_volume_size
     delete_on_termination = true
     volume_type           = "gp3"

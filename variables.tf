@@ -36,3 +36,9 @@ variable "root_volume_size" {
   default     = 8
   description = "EC2 root volume size"
 }
+
+variable "root_encrypted" {
+  type        = bool
+  default     = false
+  description = "Encrypt EC2 root volume"
+}
