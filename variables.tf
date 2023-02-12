@@ -42,3 +42,9 @@ variable "root_encrypted" {
   default     = false
   description = "Encrypt EC2 root volume"
 }
+
+variable "aws_iam_policy_arns" {
+  type        = list(string)
+  default     = []
+  description = "AWS IAM Policy ARNs"
+}
