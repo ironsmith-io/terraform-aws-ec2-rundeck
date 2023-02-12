@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-### [0.0.6](https://github.com/rundeck-io/terraform-aws-ec2-rundeck/compare/v0.0.5...v0.0.6) (2023-02-09)
+### [0.0.6](https://github.com/rundeck-io/terraform-aws-ec2-rundeck/compare/v0.0.5...v0.0.6) (2023-02-12)
 
 
 ### Bug Fixes
