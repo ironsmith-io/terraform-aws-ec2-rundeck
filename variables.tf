@@ -10,7 +10,7 @@ variable "aws_subnet_id" {
 
 variable "key_pair_name" {
   type        = string
-  description = "EC2 Key pair for Rundeck host "
+  description = "EC2 Key pair for Rundeck host"
 }
 
 variable "instance_type" {
@@ -31,3 +31,20 @@ variable "ip_allow_https" {
   description = "Allowed IPs for HTTPS to Rundeck host"
 }
 
+variable "root_volume_size" {
+  type        = number
+  default     = 8
+  description = "EC2 root volume size"
+}
+
+variable "root_encrypted" {
+  type        = bool
+  default     = false
+  description = "Encrypt EC2 root volume"
+}
+
+variable "aws_iam_policy_arns" {
+  type        = list(string)
+  default     = []
+  description = "AWS IAM Policy ARNs"
+}

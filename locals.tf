@@ -9,4 +9,6 @@ locals {
     env     = "dev"
     prov    = "terraform"
   }
+
+  use_instance_profile = length(var.aws_iam_policy_arns) > 0
 }

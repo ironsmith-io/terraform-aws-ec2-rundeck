@@ -1,2 +1,5 @@
 formatter: markdown table
 header-from: header.md
+recursive:
+  enabled: true
+  path: examples
