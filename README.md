@@ -1,6 +1,6 @@
 # AWS EC2 Rundeck Terraform module
 
-Terraform module that creates a Rundeck EC2 (spot) instance.
+Terraform module that creates a Rundeck EC2 instance.
 
 ## Usage
 
@@ -20,15 +20,14 @@ module "rundeck" {
   # root_volume_size    = 8
   # root_encrypted      = false
   # instance_type       = "c5.large"
+  # create_spot_instance = false
   # aws_iam_policy_arns = []
-  
   # example useage
-    #   aws_iam_policy_arns = [
-    #     "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
-    #     "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
-    #     aws_iam_policy.rundeck.arn
-    #   ]
-
+  #   aws_iam_policy_arns = [
+  #     "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
+  #     "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
+  #     aws_iam_policy.rundeck.arn
+  #   ]
 }
 
 ```
