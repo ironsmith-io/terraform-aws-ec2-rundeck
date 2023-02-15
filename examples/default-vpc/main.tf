@@ -1,9 +1,10 @@
 
 module "rundeck" {
-  source        = "../../"
-  aws_vpc_id    = data.aws_vpc.default.id
-  aws_subnet_id = data.aws_subnet.default.id
-  key_pair_name = "rundeck-us-west-2"
+  source               = "../../"
+  aws_vpc_id           = data.aws_vpc.default.id
+  aws_subnet_id        = data.aws_subnet.default.id
+  key_pair_name        = "rundeck-us-west-2"
+  create_spot_instance = true
 
   # OPTIONALS           = defaults
   # ip_allow_ssh        = ["0.0.0.0/0"]
