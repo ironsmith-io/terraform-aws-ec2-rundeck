@@ -1,6 +1,27 @@
+# rundeck ec2 instance
+resource "aws_instance" "rundeck" {
+  count                  = var.create_spot_instance ? 0 : 1
+  ami                    = data.aws_ami.rundeck.id
+  key_name               = var.key_pair_name
+  instance_type          = var.instance_type
+  vpc_security_group_ids = [aws_security_group.rundeck.id]
+  subnet_id              = var.aws_subnet_id
+  tags                   = local.common_tags
+  user_data              = file("${path.module}/user_data.sh")
+  iam_instance_profile   = local.use_instance_profile ? aws_iam_instance_profile.rundeck[0].name : null
+
+  root_block_device {
+    volume_type           = "gp3"
+    volume_size           = var.root_volume_size
+    delete_on_termination = true
+    encrypted             = var.root_encrypted
+    tags                  = local.common_tags
+  }
+}
 
 # Spot Instance
 resource "aws_spot_instance_request" "rundeck" {
+  count                          = var.create_spot_instance ? 1 : 0
   ami                            = data.aws_ami.rundeck.id
   key_name                       = var.key_pair_name
   instance_type                  = var.instance_type
@@ -22,8 +43,16 @@ resource "aws_spot_instance_request" "rundeck" {
   }
 }
 
+# resource "aws_ec2_tag" "rundeck" {
+#   resource_id = aws_spot_instance_request.rundeck[0].spot_instance_id
+#   for_each    = local.common_tags
+#   key         = each.key
+#   value       = each.value
+# }
+
+# tag spot instance
 resource "aws_ec2_tag" "rundeck" {
-  resource_id = aws_spot_instance_request.rundeck.spot_instance_id
+  resource_id = var.create_spot_instance ? aws_spot_instance_request.rundeck[0].spot_instance_id : aws_instance.rundeck[0].id
   for_each    = local.common_tags
   key         = each.key
   value       = each.value

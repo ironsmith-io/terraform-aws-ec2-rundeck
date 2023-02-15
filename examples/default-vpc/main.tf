@@ -11,8 +11,8 @@ module "rundeck" {
   # root_volume_size    = 8
   # root_encrypted      = false
   # instance_type       = "c5.large"
+  # create_spot_instance = false
   # aws_iam_policy_arns = []
-
   # example useage
   #   aws_iam_policy_arns = [
   #     "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
@@ -60,8 +60,3 @@ data "aws_subnet" "default" {
 #     ]
 #   })
 # }
-
-output "server_url" {
-  value       = module.rundeck.server_url
-  description = "HTTPS endpoint of Rundeck host"
-}
