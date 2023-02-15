@@ -42,7 +42,7 @@ module "rundeck" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.50.0 |
 
 ## Providers
@@ -72,7 +72,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aws_iam_policy_arns"></a> [aws\_iam\_policy\_arns](#input\_aws\_iam\_policy\_arns) | AWS IAM Policy ARNs | `list(string)` | `[]` | no |
+| <a name="input_aws_iam_policy_arns"></a> [aws\_iam\_policy\_arns](#input\_aws\_iam\_policy\_arns) | AWS IAM Policy ARNs. | `list(string)` | `[]` | no |
 | <a name="input_aws_subnet_id"></a> [aws\_subnet\_id](#input\_aws\_subnet\_id) | Public subnet that hosts Rundeck EC2 instance | `string` | n/a | yes |
 | <a name="input_aws_vpc_id"></a> [aws\_vpc\_id](#input\_aws\_vpc\_id) | AWS VPC Identifier | `string` | n/a | yes |
 | <a name="input_create_spot_instance"></a> [create\_spot\_instance](#input\_create\_spot\_instance) | Create an EC2 Spot Instance | `bool` | `false` | no |
@@ -88,5 +88,6 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_ec2_instance_id"></a> [ec2\_instance\_id](#output\_ec2\_instance\_id) | The Rundeck EC2 Instance ID |
+| <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The Rundeck EC2 Security Group ID |
 | <a name="output_server_url"></a> [server\_url](#output\_server\_url) | Rundeck's HTTPS endpoint |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

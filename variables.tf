@@ -3,7 +3,7 @@ variable "aws_vpc_id" {
   description = "AWS VPC Identifier"
   validation {
     condition     = length(var.aws_vpc_id) > 11
-    error_message = "Invalid AWS VPC ID"
+    error_message = "Invalid AWS VPC ID."
   }
 }
 
@@ -12,7 +12,7 @@ variable "aws_subnet_id" {
   description = "Public subnet that hosts Rundeck EC2 instance"
   validation {
     condition     = length(var.aws_subnet_id) > 7
-    error_message = "Invalid AWS Subnet ID"
+    error_message = "Invalid AWS Subnet ID."
   }
 }
 
@@ -21,7 +21,7 @@ variable "key_pair_name" {
   description = "EC2 Key pair for Rundeck host"
   validation {
     condition     = length(var.key_pair_name) > 0
-    error_message = "EC2 Key pair name must be provided"
+    error_message = "EC2 Key pair name must be provided."
   }
 }
 
@@ -31,7 +31,7 @@ variable "instance_type" {
   description = "EC2 Instance Type"
   validation {
     condition     = can(regex("^([a-z]+\\d+\\.[a-z]+)/?$", var.instance_type))
-    error_message = "Invalid EC2 instance type format"
+    error_message = "Invalid EC2 instance type format."
   }
 }
 
@@ -74,10 +74,10 @@ variable "root_encrypted" {
 variable "aws_iam_policy_arns" {
   type        = list(string)
   default     = []
-  description = "AWS IAM Policy ARNs"
+  description = "AWS IAM Policy ARNs."
   validation {
     condition     = length(var.aws_iam_policy_arns) <= 10
-    error_message = "Number of AWS IAM Policy ARNs should be 10 or less"
+    error_message = "Number of AWS IAM Policy ARNs should be 10 or less."
   }
 }
 
