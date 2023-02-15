@@ -17,13 +17,16 @@ Note that this example will create resources which cost money. Run `terraform de
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.50.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.50.0 |
 
 ## Modules
 
@@ -47,5 +50,6 @@ No inputs.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_ec2_instance_id"></a> [ec2\_instance\_id](#output\_ec2\_instance\_id) | The Rundeck EC2 Instance ID |
 | <a name="output_server_url"></a> [server\_url](#output\_server\_url) | HTTPS endpoint of Rundeck host |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
