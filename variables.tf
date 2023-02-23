@@ -86,3 +86,10 @@ variable "create_spot_instance" {
   default     = false
   description = "Create an EC2 Spot Instance"
 }
+
+variable "rdeck_jvm_settings" {
+  type        = string
+  default     = null
+  description = "Rundeck JVM Options"
+
+}

@@ -19,6 +19,7 @@ resource "aws_instance" "rundeck" {
   }
 }
 
+
 # Spot Instance
 resource "aws_spot_instance_request" "rundeck" {
   count                          = var.create_spot_instance ? 1 : 0
@@ -30,8 +31,13 @@ resource "aws_spot_instance_request" "rundeck" {
   vpc_security_group_ids         = [aws_security_group.rundeck.id]
   subnet_id                      = var.aws_subnet_id
   tags                           = local.common_tags
-  user_data                      = file("${path.module}/user_data.sh")
   iam_instance_profile           = local.use_instance_profile ? aws_iam_instance_profile.rundeck[0].name : null
+
+  user_data = templatefile("${path.module}/user_data.sh",
+    {
+      rdeck_jvm_settings = local.rdeck_jvm_settings == null ? "" : local.rdeck_jvm_settings
+    }
+  )
 
   ebs_block_device {
     device_name           = "/dev/sda1"
@@ -42,13 +48,6 @@ resource "aws_spot_instance_request" "rundeck" {
     tags                  = local.common_tags
   }
 }
-
-# resource "aws_ec2_tag" "rundeck" {
-#   resource_id = aws_spot_instance_request.rundeck[0].spot_instance_id
-#   for_each    = local.common_tags
-#   key         = each.key
-#   value       = each.value
-# }
 
 # tag spot instance
 resource "aws_ec2_tag" "rundeck" {

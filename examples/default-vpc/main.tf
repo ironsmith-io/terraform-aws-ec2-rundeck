@@ -20,6 +20,9 @@ module "rundeck" {
   #     "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
   #     aws_iam_policy.rundeck.arn
   #   ]
+  # rdeck_jvm_settings = null
+  # example useage
+  # rdeck_jvm_settings = "-Xmx2048m -Xms512m"
 
 }
 

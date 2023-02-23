@@ -33,6 +33,9 @@ sed -i 's/grails.serverURL=http:\/\/localhost:4440/grails.serverURL=https:\/\/'$
 # adjust some environment variables
 echo 'export RUNDECK_WITH_SSL=true' >> /etc/sysconfig/rundeckd
 echo 'export RDECK_HTTPS_PORT=4443' >> /etc/sysconfig/rundeckd
+if [ -n "${rdeck_jvm_settings}" ]; then
+    echo 'export RDECK_JVM_SETTINGS=${rdeck_jvm_settings}' >> /etc/sysconfig/rundeckd
+fi 
 
 #########################################################################################
 # Generate self-signed certificate used by Rundeck host.
