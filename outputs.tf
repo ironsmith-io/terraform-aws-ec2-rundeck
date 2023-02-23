@@ -12,3 +12,8 @@ output "security_group_id" {
   value       = aws_security_group.rundeck.id
   description = "The Rundeck EC2 Security Group ID"
 }
+
+output "public_ip" {
+  value       = var.create_spot_instance ? aws_spot_instance_request.rundeck[0].public_ip : aws_instance.rundeck[0].public_ip
+  description = "The Rundeck Server's Public IP"
+}

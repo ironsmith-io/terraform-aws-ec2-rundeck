@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Features
 
 * Add support for custom Rundeck JVM settings via the `rdeck_jvm_settings` variable.
+* Add EC2 `public_ip` to module's output.
 
 
 ### [0.0.7](https://github.com/rundeck-io/terraform-aws-ec2-rundeck/compare/v0.0.6...v0.0.7) (2023-02-15)

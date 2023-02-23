@@ -88,6 +88,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_ec2_instance_id"></a> [ec2\_instance\_id](#output\_ec2\_instance\_id) | The Rundeck EC2 Instance ID |
+| <a name="output_public_ip"></a> [public\_ip](#output\_public\_ip) | The Rundeck Server's Public IP |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The Rundeck EC2 Security Group ID |
 | <a name="output_server_url"></a> [server\_url](#output\_server\_url) | Rundeck's HTTPS endpoint |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
