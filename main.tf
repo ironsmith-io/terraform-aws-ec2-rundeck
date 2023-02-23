@@ -7,8 +7,13 @@ resource "aws_instance" "rundeck" {
   vpc_security_group_ids = [aws_security_group.rundeck.id]
   subnet_id              = var.aws_subnet_id
   tags                   = local.common_tags
-  user_data              = file("${path.module}/user_data.sh")
   iam_instance_profile   = local.use_instance_profile ? aws_iam_instance_profile.rundeck[0].name : null
+
+  user_data = templatefile("${path.module}/user_data.sh",
+    {
+      rdeck_jvm_settings = local.rdeck_jvm_settings == null ? "" : local.rdeck_jvm_settings
+    }
+  )
 
   root_block_device {
     volume_type           = "gp3"
