@@ -79,14 +79,17 @@ No modules.
 | <a name="input_ip_allow_https"></a> [ip\_allow\_https](#input\_ip\_allow\_https) | Allowed IPs for HTTPS to Rundeck host | `set(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_ip_allow_ssh"></a> [ip\_allow\_ssh](#input\_ip\_allow\_ssh) | Allowed IPs for SSH to Rundeck host | `set(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_key_pair_name"></a> [key\_pair\_name](#input\_key\_pair\_name) | EC2 Key pair for Rundeck host | `string` | n/a | yes |
+| <a name="input_rdeck_jvm_settings"></a> [rdeck\_jvm\_settings](#input\_rdeck\_jvm\_settings) | Rundeck JVM Options | `string` | `null` | no |
 | <a name="input_root_encrypted"></a> [root\_encrypted](#input\_root\_encrypted) | Encrypt EC2 root volume | `bool` | `false` | no |
 | <a name="input_root_volume_size"></a> [root\_volume\_size](#input\_root\_volume\_size) | EC2 root volume size | `number` | `8` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags to use on AWS resources | `map(string)` | <pre>{<br>  "Name": "Rundeck",<br>  "app": "rundeck",<br>  "contact": "hello@rundeck.io",<br>  "env": "dev",<br>  "prov": "terraform",<br>  "role": "app",<br>  "ver": "0.0.1"<br>}</pre> | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_ec2_instance_id"></a> [ec2\_instance\_id](#output\_ec2\_instance\_id) | The Rundeck EC2 Instance ID |
+| <a name="output_public_ip"></a> [public\_ip](#output\_public\_ip) | The Rundeck Server's Public IP |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The Rundeck EC2 Security Group ID |
 | <a name="output_server_url"></a> [server\_url](#output\_server\_url) | Rundeck's HTTPS endpoint |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

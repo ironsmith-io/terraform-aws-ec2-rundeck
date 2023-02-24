@@ -6,21 +6,24 @@ module "rundeck" {
   key_pair_name        = "rundeck-us-west-2"
   create_spot_instance = true
 
-  # OPTIONALS           = defaults
-  # ip_allow_ssh        = ["0.0.0.0/0"]
-  # ip_allow_https      = ["0.0.0.0/0"]
-  # root_volume_size    = 8
-  # root_encrypted      = false
-  # instance_type       = "c5.large"
+  # OPTIONALS            = defaults
+  # ip_allow_ssh         = ["0.0.0.0/0"]
+  # ip_allow_https       = ["0.0.0.0/0"]
+  # root_volume_size     = 8
+  # root_encrypted       = false
+  # instance_type        = "c5.large"
   # create_spot_instance = false
-  # aws_iam_policy_arns = []
+  # aws_iam_policy_arns  = []
+  # rdeck_jvm_settings   = null
   # example useage
-  #   aws_iam_policy_arns = [
-  #     "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
-  #     "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
-  #     aws_iam_policy.rundeck.arn
-  #   ]
-
+  # rdeck_jvm_settings   = "-Xmx2048m -Xms512m"
+  # tags                 = look up in variables.tf   
+  # example useage
+  # tags                 = {
+  #                           Name    = "Some_thing"
+  #                           version = "1.2.3"
+  #                           etc 
+  #                        }
 }
 
 provider "aws" {
@@ -39,25 +42,3 @@ data "aws_subnet" "default" {
   availability_zone = data.aws_availability_zones.available.names[0]
   vpc_id            = data.aws_vpc.default.id
 }
-
-# resource "aws_iam_policy" "rundeck" {
-#   name        = "rundeck-io-policy"
-#   description = "Policy for EC2 Rundeck"
-#   policy = jsonencode({
-#     Version = "2012-10-17",
-#     Statement = [{
-#       Action = [
-#         "s3:Get*",
-#         "s3:List*"
-#       ],
-#       Effect   = "Allow",
-#       Resource = "*"
-#       },
-#       {
-#         "Effect" : "Allow",
-#         "Action" : ["ec2:Describe*"],
-#         "Resource" : "*"
-#       }
-#     ]
-#   })
-# }
