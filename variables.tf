@@ -91,5 +91,18 @@ variable "rdeck_jvm_settings" {
   type        = string
   default     = null
   description = "Rundeck JVM Options"
+}
 
+variable "tags" {
+  type = map(string)
+  default = {
+    Name    = "Rundeck"
+    app     = "rundeck"
+    role    = "app"
+    ver     = "0.0.1"
+    contact = "hello@rundeck.io"
+    env     = "dev"
+    prov    = "terraform"
+  }
+  description = "Tags to use on AWS resources"
 }

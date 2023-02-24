@@ -6,24 +6,24 @@ module "rundeck" {
   key_pair_name        = "rundeck-us-west-2"
   create_spot_instance = true
 
-  # OPTIONALS           = defaults
-  # ip_allow_ssh        = ["0.0.0.0/0"]
-  # ip_allow_https      = ["0.0.0.0/0"]
-  # root_volume_size    = 8
-  # root_encrypted      = false
-  # instance_type       = "c5.large"
+  # OPTIONALS            = defaults
+  # ip_allow_ssh         = ["0.0.0.0/0"]
+  # ip_allow_https       = ["0.0.0.0/0"]
+  # root_volume_size     = 8
+  # root_encrypted       = false
+  # instance_type        = "c5.large"
   # create_spot_instance = false
-  # aws_iam_policy_arns = []
+  # aws_iam_policy_arns  = []
+  # rdeck_jvm_settings   = null
   # example useage
-  #   aws_iam_policy_arns = [
-  #     "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
-  #     "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
-  #     aws_iam_policy.rundeck.arn
-  #   ]
-  # rdeck_jvm_settings = null
+  # rdeck_jvm_settings   = "-Xmx2048m -Xms512m"
+  # tags                 = look up in variables.tf   
   # example useage
-  # rdeck_jvm_settings = "-Xmx2048m -Xms512m"
-
+  # tags                 = {
+  #                           Name    = "Some_thing"
+  #                           version = "1.2.3"
+  #                           etc 
+  #                        }
 }
 
 provider "aws" {

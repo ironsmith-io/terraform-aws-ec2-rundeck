@@ -82,6 +82,7 @@ No modules.
 | <a name="input_rdeck_jvm_settings"></a> [rdeck\_jvm\_settings](#input\_rdeck\_jvm\_settings) | Rundeck JVM Options | `string` | `null` | no |
 | <a name="input_root_encrypted"></a> [root\_encrypted](#input\_root\_encrypted) | Encrypt EC2 root volume | `bool` | `false` | no |
 | <a name="input_root_volume_size"></a> [root\_volume\_size](#input\_root\_volume\_size) | EC2 root volume size | `number` | `8` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags to use on AWS resources | `map(string)` | <pre>{<br>  "Name": "Rundeck",<br>  "app": "rundeck",<br>  "contact": "hello@rundeck.io",<br>  "env": "dev",<br>  "prov": "terraform",<br>  "role": "app",<br>  "ver": "0.0.1"<br>}</pre> | no |
 
 ## Outputs
 

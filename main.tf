@@ -6,7 +6,7 @@ resource "aws_instance" "rundeck" {
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.rundeck.id]
   subnet_id              = var.aws_subnet_id
-  tags                   = local.common_tags
+  tags                   = var.tags
   iam_instance_profile   = local.use_instance_profile ? aws_iam_instance_profile.rundeck[0].name : null
 
   user_data = templatefile("${path.module}/user_data.sh",
@@ -20,7 +20,7 @@ resource "aws_instance" "rundeck" {
     volume_size           = var.root_volume_size
     delete_on_termination = true
     encrypted             = var.root_encrypted
-    tags                  = local.common_tags
+    tags                  = var.tags
   }
 }
 
@@ -35,7 +35,7 @@ resource "aws_spot_instance_request" "rundeck" {
   wait_for_fulfillment           = true
   vpc_security_group_ids         = [aws_security_group.rundeck.id]
   subnet_id                      = var.aws_subnet_id
-  tags                           = local.common_tags
+  tags                           = var.tags
   iam_instance_profile           = local.use_instance_profile ? aws_iam_instance_profile.rundeck[0].name : null
 
   user_data = templatefile("${path.module}/user_data.sh",
@@ -50,14 +50,14 @@ resource "aws_spot_instance_request" "rundeck" {
     volume_size           = var.root_volume_size
     delete_on_termination = true
     volume_type           = "gp3"
-    tags                  = local.common_tags
+    tags                  = var.tags
   }
 }
 
 # tag spot instance
 resource "aws_ec2_tag" "rundeck" {
   resource_id = var.create_spot_instance ? aws_spot_instance_request.rundeck[0].spot_instance_id : aws_instance.rundeck[0].id
-  for_each    = local.common_tags
+  for_each    = var.tags
   key         = each.key
   value       = each.value
 }
@@ -67,7 +67,7 @@ resource "aws_security_group" "rundeck" {
   name        = "rundeck-io-ec2"
   description = "Allow for Rundeck Servers"
   vpc_id      = var.aws_vpc_id
-  tags        = local.common_tags
+  tags        = var.tags
 
   ingress {
     from_port   = 22
@@ -98,14 +98,14 @@ resource "aws_iam_instance_profile" "rundeck" {
   count = local.use_instance_profile ? 1 : 0
   name  = "rundeck-io-instance-profile"
   role  = aws_iam_role.rundeck[count.index].name
-  tags  = local.common_tags
+  tags  = var.tags
 }
 
 # IAM role for rundeck host, only if ARNs passed into module
 resource "aws_iam_role" "rundeck" {
   count = local.use_instance_profile ? 1 : 0
   name  = "rundeck-io-role"
-  tags  = local.common_tags
+  tags  = var.tags
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
