@@ -9,7 +9,7 @@ Terraform module that creates a Rundeck EC2 instance.
 ```hcl
 
 module "rundeck" {
-  source            = "git@github.com:rundeck-io/terraform-aws-ec2-rundeck.git"
+  source            = "git@github.com:ironsmith-io/terraform-aws-ec2-rundeck.git"
   aws_vpc_id        = data.aws_vpc.default.id
   aws_subnet_id     = data.aws_subnet.default.id
   key_pair_name     = "rundeck-us-west-2"
@@ -34,7 +34,7 @@ module "rundeck" {
 
 ## Examples:
 
-- [default-vpc](https://github.com/rundeck-io/terraform-aws-ec2-rundeck/tree/master/examples/default-vpc) - Creates Rundeck EC2 instance on Default VPC
+- [default-vpc](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/tree/master/examples/default-vpc) - Creates Rundeck EC2 instance on Default VPC
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

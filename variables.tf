@@ -100,7 +100,7 @@ variable "tags" {
     app     = "rundeck"
     role    = "app"
     ver     = "0.0.1"
-    contact = "hello@rundeck.io"
+    contact = "hello@ironsmith.io"
     env     = "dev"
     prov    = "terraform"
   }

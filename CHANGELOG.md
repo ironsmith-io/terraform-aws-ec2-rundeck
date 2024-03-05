@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-### [0.0.8](https://github.com/rundeck-io/terraform-aws-ec2-rundeck/compare/v0.0.7...v0.0.8) (2023-02-)
+### [0.0.9](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v0.0.7...v0.0.8) (2024-02-6)
+
+### Features
+ 
+ * migrate to ironsmith-io
+
+### [0.0.8](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v0.0.7...v0.0.8) (2023-02-23)
 
 ### Features
 
@@ -11,7 +17,7 @@ All notable changes to this project will be documented in this file.
 * Add `default-vpc-iam` example.
 * Add support for tags via the `tags` variable.
 
-### [0.0.7](https://github.com/rundeck-io/terraform-aws-ec2-rundeck/compare/v0.0.6...v0.0.7) (2023-02-15)
+### [0.0.7](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v0.0.6...v0.0.7) (2023-02-15)
 
 ### Features
 
@@ -21,7 +27,7 @@ All notable changes to this project will be documented in this file.
 * Add module variable validations.
 * Bumped terraform `required_version` to 0.14.
 
-### [0.0.6](https://github.com/rundeck-io/terraform-aws-ec2-rundeck/compare/v0.0.5...v0.0.6) (2023-02-12) 
+### [0.0.6](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v0.0.5...v0.0.6) (2023-02-12) 
 
 ### Bug Fixes
 
