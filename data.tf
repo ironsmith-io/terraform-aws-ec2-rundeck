@@ -1,10 +1,29 @@
-# Latest Centos 7 AMI from Centos.org
-# https://centos.org/download/aws-images/
-data "aws_ami" "rundeck" {
+# Look up VPC from subnet
+data "aws_subnet" "selected" {
+  id = var.subnet_id
+}
+
+# Current AWS region and partition
+data "aws_region" "current" {}
+data "aws_partition" "current" {}
+
+# Auto-discover latest Rocky Linux 9 AMI (Rocky Enterprise Software Foundation)
+data "aws_ami" "rocky" {
   most_recent = true
-  owners      = ["125523088429"]
+  owners      = ["792107900819"]
+
   filter {
     name   = "name"
-    values = ["CentOS Linux 7 x86_64*"]
+    values = ["Rocky-9-EC2-Base-9*"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
+    name   = "state"
+    values = ["available"]
   }
 }

@@ -1,4 +1,4 @@
 formatter: markdown table
-output: 
+output:
   type: file
   value: README.md

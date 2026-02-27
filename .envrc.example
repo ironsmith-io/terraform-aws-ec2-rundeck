@@ -1,0 +1,21 @@
+# Development environment configuration
+# Copy to .envrc and customize: cp .envrc.example .envrc
+# Then run: direnv allow
+
+export AWS_PROFILE=your-profile
+export AWS_DEFAULT_REGION=us-west-2
+
+# Terraform variables (auto-read by all examples via TF_VAR_*)
+export TF_VAR_subnet_id=subnet-xxxxxxxx
+# export TF_VAR_key_pair_name=rundeck-us-west-2
+# export TF_VAR_ip_allow_https='["0.0.0.0/0"]'
+# export TF_VAR_ip_allow_ssh='["0.0.0.0/0"]'
+
+# Integration tests (make test-integration)
+export TEST_SUBNET_ID=$TF_VAR_subnet_id
+
+# Active example directory: complete (default), minimal, ssm-only
+# export EXAMPLE=complete
+
+# SSH key for make ssh/cloud-init/rundeck-log/status (optional)
+# export TEST_PRIVATE_KEY_PATH=$PWD/rundeck-us-west-2.pem

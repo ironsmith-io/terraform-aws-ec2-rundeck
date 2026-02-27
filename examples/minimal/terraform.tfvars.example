@@ -1,0 +1,2 @@
+subnet_id     = "subnet-xxxxxxxx"
+key_pair_name = "my-keypair"

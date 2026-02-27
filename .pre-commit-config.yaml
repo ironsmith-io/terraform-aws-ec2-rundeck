@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.77.1
+    rev: v1.105.0
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
@@ -22,8 +22,40 @@ repos:
           - '--args=--only=terraform_required_providers'
           - '--args=--only=terraform_standard_module_structure'
           - '--args=--only=terraform_workspace_remote'
+      - id: terraform_checkov
+        args:
+          - '--args=--quiet'
+          - '--args=--compact'
+          - '--args=--framework terraform'
+          # Intentional design decisions:
+          - '--args=--skip-check CKV_AWS_88'   # Public IP required for Rundeck web access
+          - '--args=--skip-check CKV_AWS_135'  # EBS optimization not available on all instance types
+          - '--args=--skip-check CKV_AWS_79'   # IMDSv2 hop limit 1 is sufficient (IMDSv2 enforced)
+          - '--args=--skip-check CKV_AWS_126'  # Detailed monitoring optional (adds cost)
+          - '--args=--skip-check CKV_AWS_24'   # SSH CIDR from examples; module defaults to [] (secure)
+          - '--args=--skip-check CKV_AWS_382'  # Egress required for dnf, Let's Encrypt, CloudWatch, SSM
+          - '--args=--skip-check CKV_AWS_290'  # DLM requires ec2:CreateSnapshot on * (AWS limitation)
+          - '--args=--skip-check CKV_AWS_355'  # DLM requires * resource for snapshots (AWS limitation)
+          - '--args=--skip-check CKV_AWS_158'  # CloudWatch Logs KMS requires CMK ($1/mo), not AWS-managed key
+          - '--args=--skip-check CKV_AWS_26'   # SNS KMS breaks CloudWatch Alarms; AWS-owned encryption still active
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v6.0.0
     hooks:
       - id: check-merge-conflict
       - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-yaml
+        exclude: cloud-init\.yml
+      - id: check-json
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      - id: gitleaks
+  - repo: local
+    hooks:
+      - id: golangci-lint
+        name: golangci-lint
+        entry: bash -c 'cd test && golangci-lint run --timeout=3m'
+        language: system
+        files: ^test/.*\.go$
+        pass_filenames: false

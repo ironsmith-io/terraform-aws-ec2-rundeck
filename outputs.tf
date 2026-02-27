@@ -1,19 +1,59 @@
-output "server_url" {
-  value       = format("https://%s:4443", var.create_spot_instance ? aws_spot_instance_request.rundeck[0].public_ip : aws_instance.rundeck[0].public_ip)
-  description = "Rundeck's HTTPS endpoint"
-}
-
-output "ec2_instance_id" {
-  value       = var.create_spot_instance ? aws_spot_instance_request.rundeck[0].spot_instance_id : aws_instance.rundeck[0].id
-  description = "The Rundeck EC2 Instance ID"
-}
-
-output "security_group_id" {
-  value       = aws_security_group.rundeck.id
-  description = "The Rundeck EC2 Security Group ID"
+output "instance_id" {
+  value       = aws_instance.this.id
+  description = "EC2 instance ID"
 }
 
 output "public_ip" {
-  value       = var.create_spot_instance ? aws_spot_instance_request.rundeck[0].public_ip : aws_instance.rundeck[0].public_ip
-  description = "The Rundeck Server's Public IP"
+  value       = aws_instance.this.public_ip
+  description = "Public IP address (if assigned)"
+}
+
+output "private_ip" {
+  value       = aws_instance.this.private_ip
+  description = "Private IP address"
+}
+
+output "security_group_id" {
+  value       = aws_security_group.this.id
+  description = "Security group ID"
+}
+
+output "iam_role_arn" {
+  value       = local.use_instance_profile ? aws_iam_role.this[0].arn : null
+  description = "IAM role ARN (when instance profile is created)"
+}
+
+output "ami_id" {
+  value       = local.ami_id
+  description = "AMI ID used for the instance (useful when auto-discovered)"
+}
+
+output "ami_name" {
+  value       = data.aws_ami.rocky.name
+  description = "AMI name (from data source)"
+}
+
+output "server_url" {
+  value       = aws_instance.this.public_ip != null ? "https://${aws_instance.this.public_ip}" : null
+  description = "Rundeck web UI URL (HTTPS)"
+}
+
+output "ssh_command" {
+  value       = aws_instance.this.public_ip != null ? "ssh rocky@${aws_instance.this.public_ip}" : null
+  description = "SSH command to connect to the instance"
+}
+
+output "cloudwatch_log_group_name" {
+  value       = var.enable_cloudwatch_logs ? aws_cloudwatch_log_group.this[0].name : null
+  description = "CloudWatch Log Group name (when CloudWatch is enabled)"
+}
+
+output "cloudwatch_dashboard_url" {
+  value       = var.enable_cloudwatch_logs ? "https://${data.aws_region.current.id}.console.aws.amazon.com/cloudwatch/home?region=${data.aws_region.current.id}#dashboards:name=${aws_cloudwatch_dashboard.this[0].dashboard_name}" : null
+  description = "CloudWatch Operations Dashboard URL (when CloudWatch is enabled)"
+}
+
+output "sns_topic_arn" {
+  value       = var.create_sns_topic ? aws_sns_topic.alarms[0].arn : null
+  description = "SNS Topic ARN for alarm notifications (when create_sns_topic is true)"
 }

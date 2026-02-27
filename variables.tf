@@ -1,44 +1,86 @@
-variable "aws_vpc_id" {
-  type        = string
-  description = "AWS VPC Identifier"
-  validation {
-    condition     = length(var.aws_vpc_id) > 11
-    error_message = "Invalid AWS VPC ID."
-  }
-}
+#=============================================================================
+# Required Variables
+#=============================================================================
 
-variable "aws_subnet_id" {
+variable "subnet_id" {
   type        = string
-  description = "Public subnet that hosts Rundeck EC2 instance"
+  description = "Subnet to launch the EC2 instance into. VPC is derived automatically."
   validation {
-    condition     = length(var.aws_subnet_id) > 7
-    error_message = "Invalid AWS Subnet ID."
+    condition     = can(regex("^subnet-[a-f0-9]{8,17}$", var.subnet_id))
+    error_message = "Invalid AWS Subnet ID format (must be subnet-xxxxxxxx)."
   }
 }
 
 variable "key_pair_name" {
   type        = string
-  description = "EC2 Key pair for Rundeck host"
-  validation {
-    condition     = length(var.key_pair_name) > 0
-    error_message = "EC2 Key pair name must be provided."
-  }
+  default     = null
+  description = "EC2 key pair name for SSH access. Required when enable_ssh = true."
+}
+
+#=============================================================================
+# Instance Configuration
+#=============================================================================
+
+variable "ami_id" {
+  type        = string
+  default     = null
+  description = "Specific AMI ID to use. If null, auto-discovers the latest Rocky Linux 9 AMI."
 }
 
 variable "instance_type" {
   type        = string
   default     = "c5.large"
-  description = "EC2 Instance Type"
+  description = "EC2 instance type"
   validation {
-    condition     = can(regex("^([a-z]+\\d+\\.[a-z]+)/?$", var.instance_type))
+    condition     = can(regex("^([a-z]+\\d+[a-z]*\\.[a-z0-9]+)$", var.instance_type))
     error_message = "Invalid EC2 instance type format."
   }
 }
 
+variable "name" {
+  type        = string
+  default     = "rundeck"
+  description = "Name tag for the EC2 instance and related resources"
+}
+
+variable "root_volume_size" {
+  type        = number
+  default     = 10
+  description = "Root EBS volume size in GB"
+}
+
+variable "create_spot_instance" {
+  type        = bool
+  default     = false
+  description = "Create an EC2 Spot Instance. Warning: spot instances can be interrupted by AWS."
+}
+
+variable "enable_termination_protection" {
+  type        = bool
+  default     = false
+  description = "Enable EC2 termination protection to prevent accidental instance deletion"
+}
+
+variable "delete_volume_on_termination" {
+  type        = bool
+  default     = false
+  description = "Delete EBS root volume when instance is terminated. Set to false to preserve data."
+}
+
+variable "user_data_extra" {
+  type        = string
+  default     = ""
+  description = "Additional shell commands appended to the end of cloud-init runcmd"
+}
+
+#=============================================================================
+# Network & Access
+#=============================================================================
+
 variable "ip_allow_ssh" {
   type        = set(string)
-  default     = ["0.0.0.0/0"]
-  description = "Allowed IPs for SSH to Rundeck host"
+  default     = []
+  description = "CIDR blocks allowed SSH access. Empty default requires explicit configuration."
   validation {
     condition = alltrue([
       for a in var.ip_allow_ssh : can(cidrnetmask(a))
@@ -49,8 +91,8 @@ variable "ip_allow_ssh" {
 
 variable "ip_allow_https" {
   type        = set(string)
-  default     = ["0.0.0.0/0"]
-  description = "Allowed IPs for HTTPS to Rundeck host"
+  default     = []
+  description = "CIDR blocks allowed HTTPS access (ports 80/443). Empty default requires explicit configuration."
   validation {
     condition = alltrue([
       for a in var.ip_allow_https : can(cidrnetmask(a))
@@ -59,50 +101,156 @@ variable "ip_allow_https" {
   }
 }
 
-variable "root_volume_size" {
-  type        = number
-  default     = 8
-  description = "EC2 root volume size"
+variable "enable_ssh" {
+  type        = bool
+  default     = true
+  description = "Enable SSH access (port 22). Set to false for SSM-only access."
 }
 
-variable "root_encrypted" {
+variable "enable_ssm" {
   type        = bool
   default     = false
-  description = "Encrypt EC2 root volume"
+  description = "Enable AWS Systems Manager Session Manager access"
 }
+
+variable "additional_security_group_ids" {
+  type        = list(string)
+  default     = []
+  description = "Additional security group IDs to attach to the instance"
+}
+
+#=============================================================================
+# Rundeck Configuration
+#=============================================================================
+
+variable "rundeck_jvm_settings" {
+  type        = string
+  default     = "-Xmx1g -Xms1g -XX:MaxMetaspaceSize=256m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -server"
+  description = "JVM settings for Rundeck (heap, GC, etc.). Default 1GB heap suits c5.large (4GB). For c5.xlarge+ use -Xmx2g -Xms2g"
+}
+
+variable "rundeck_admin_password_ssm_path" {
+  type        = string
+  default     = null
+  description = "SSM Parameter Store path for Rundeck admin password (SecureString). If null, uses default admin/admin credentials."
+}
+
+variable "rundeck_session_timeout" {
+  type        = number
+  default     = 30
+  description = "Rundeck web session timeout in minutes"
+  validation {
+    condition     = var.rundeck_session_timeout >= 5 && var.rundeck_session_timeout <= 480
+    error_message = "Session timeout must be between 5 and 480 minutes."
+  }
+}
+
+variable "enable_plugin_repository" {
+  type        = bool
+  default     = false
+  description = "Enable Rundeck online plugin repository. When disabled, plugins must be pre-installed or deployed via Terraform."
+}
+
+#=============================================================================
+# Monitoring & Logging
+#=============================================================================
+
+variable "enable_cloudwatch_logs" {
+  type        = bool
+  default     = false
+  description = "Enable CloudWatch agent to ship logs and metrics"
+}
+
+variable "cloudwatch_log_retention_days" {
+  type        = number
+  default     = 365
+  description = "CloudWatch Logs retention in days"
+  validation {
+    condition     = contains([1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1096, 1827, 2192, 2557, 2922, 3288, 3653], var.cloudwatch_log_retention_days)
+    error_message = "Log retention must be a valid CloudWatch retention period."
+  }
+}
+
+variable "cloudwatch_kms_key_id" {
+  type        = string
+  default     = null
+  description = "KMS Key ARN for CloudWatch Logs encryption. If null, CloudWatch internal encryption is used."
+}
+
+variable "enable_security_alarms" {
+  type        = bool
+  default     = false
+  description = "Enable CloudWatch alarms for infrastructure events (failed SSH, disk space, CPU, process monitoring)"
+}
+
+variable "create_sns_topic" {
+  type        = bool
+  default     = false
+  description = "Create an SNS topic for alarm notifications. If false, use alarm_sns_topic_arn for existing topic."
+}
+
+variable "alarm_email" {
+  type        = string
+  default     = null
+  description = "Email address for alarm notifications"
+}
+
+variable "alarm_sns_topic_arn" {
+  type        = string
+  default     = null
+  description = "Existing SNS Topic ARN for CloudWatch alarm notifications"
+}
+
+#=============================================================================
+# Data Protection
+#=============================================================================
+
+variable "enable_ebs_snapshots" {
+  type        = bool
+  default     = false
+  description = "Enable automated daily EBS snapshots via AWS Data Lifecycle Manager"
+}
+
+variable "snapshot_retention_days" {
+  type        = number
+  default     = 7
+  description = "Number of days to retain EBS snapshots"
+  validation {
+    condition     = var.snapshot_retention_days >= 1 && var.snapshot_retention_days <= 365
+    error_message = "Snapshot retention must be between 1 and 365 days."
+  }
+}
+
+variable "snapshot_time" {
+  type        = string
+  default     = "05:00"
+  description = "Time of day (UTC) to take daily EBS snapshots (HH:MM format)"
+  validation {
+    condition     = can(regex("^([01]?[0-9]|2[0-3]):[0-5][0-9]$", var.snapshot_time))
+    error_message = "Snapshot time must be in HH:MM format (e.g., 05:00)."
+  }
+}
+
+#=============================================================================
+# IAM
+#=============================================================================
 
 variable "aws_iam_policy_arns" {
   type        = list(string)
   default     = []
-  description = "AWS IAM Policy ARNs."
+  description = "Additional managed IAM policy ARNs to attach to the instance role"
   validation {
     condition     = length(var.aws_iam_policy_arns) <= 10
     error_message = "Number of AWS IAM Policy ARNs should be 10 or less."
   }
 }
 
-variable "create_spot_instance" {
-  type        = bool
-  default     = false
-  description = "Create an EC2 Spot Instance"
-}
-
-variable "rdeck_jvm_settings" {
-  type        = string
-  default     = null
-  description = "Rundeck JVM Options"
-}
+#=============================================================================
+# Tags
+#=============================================================================
 
 variable "tags" {
-  type = map(string)
-  default = {
-    Name    = "Rundeck"
-    app     = "rundeck"
-    role    = "app"
-    ver     = "0.0.1"
-    contact = "hello@ironsmith.io"
-    env     = "dev"
-    prov    = "terraform"
-  }
-  description = "Tags to use on AWS resources"
+  type        = map(string)
+  default     = {}
+  description = "Additional tags to merge with module defaults"
 }
