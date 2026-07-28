@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main]
+    branches: [main, develop]
 
 permissions:
   contents: read
@@ -96,3 +96,32 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  go-checks:
+    name: Go Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: test/go.mod
+          cache-dependency-path: test/go.sum
+
+      # Compile-checks the integration tests; does NOT run them. Terratest
+      # deploys real AWS resources, so it stays out of CI (as does the rest
+      # of this workflow) and runs only via `make test-integration`.
+      - name: Build and vet
+        working-directory: test
+        run: |
+          go build ./...
+          go vet ./...
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.12.2 # keep in sync with local `golangci-lint version`
+          working-directory: test
+          args: --timeout=3m

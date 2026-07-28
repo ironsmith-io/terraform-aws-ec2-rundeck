@@ -4,8 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.1](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v1.0.0...v1.0.1)  -  (2026-07-28)
 
-> Maintenance release. No changes to the module itself — only the test suite
-> and auto-generated documentation. Consumers of the module see no functional change.
+> Maintenance release. No changes to the module itself — only the test suite,
+> CI configuration, and auto-generated documentation. Consumers of the module
+> see no functional change.
 
 ### Security
 
@@ -23,6 +24,8 @@ All notable changes to this project will be documented in this file.
   (`60 → 100` retries) to absorb slow Rocky Linux mirror variance during
   `dnf upgrade` on first boot.
 - Bumped the test module's Go directive `1.25.0` → `1.26.0` (required by terratest v1.x).
+- Added a `Go Checks` CI job (`go build`, `go vet`, `golangci-lint`) for the
+  `test/` module, and enabled CI on pushes to `develop`.
 - Regenerated `README.md` / example READMEs via terraform-docs (formatting only).
 
 ## [1.0.0](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v0.0.9...v1.0.0)  -  (2026-02-25)
