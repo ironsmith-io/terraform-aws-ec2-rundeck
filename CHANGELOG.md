@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v1.0.1...v1.0.2)  -  (2026-07-28)
+
+> Maintenance release. No changes to the module itself.
+
+### Security
+
+- Bumped `jackc/pgx/v5` (test-only) `v5.9.0` → `v5.9.2` to resolve the remaining
+  Dependabot alert: CVE-2026-41889 / GHSA-j88v-2chj-qfwx (low-severity SQL
+  injection via dollar-quoted string literals under the simple protocol).
+
+### Added
+
+- `SECURITY.md` documenting supported versions and private vulnerability reporting.
+- `.github/dependabot.yml` for automated weekly `gomod` (test suite) and
+  `github-actions` dependency updates, grouped one PR per ecosystem.
+
 ## [1.0.1](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v1.0.0...v1.0.1)  -  (2026-07-28)
 
 > Maintenance release. No changes to the module itself — only the test suite,
