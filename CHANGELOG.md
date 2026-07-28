@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v1.0.0...v1.0.1)  -  (2026-07-28)
+
+> Maintenance release. No changes to the module itself — only the test suite,
+> CI configuration, and auto-generated documentation. Consumers of the module
+> see no functional change.
+
+### Security
+
+- Bumped `terratest` (test-only) `v0.55.0` → `v1.0.1`, pulling patched transitive
+  dependencies to resolve Dependabot alerts: `cloudwatchlogs`, `lambda`,
+  `aws/protocol/eventstream`, `s3` (GHSA-xmrv-pmrh-hhx2), `jackc/pgx/v5`
+  (CVE-2026-33816, CVE-2026-33815), and `golang.org/x/crypto`.
+
+### Changed
+
+- Migrated the integration test to terratest's Context-based APIs
+  (`InitAndApplyContext`, `OutputContext`, `DoWithRetryContext`,
+  `CheckSSHCommandContextE`, etc.), replacing the deprecated non-Context functions.
+- Increased the integration-test cloud-init wait from 15 min to 25 min
+  (`60 → 100` retries) to absorb slow Rocky Linux mirror variance during
+  `dnf upgrade` on first boot.
+- Bumped the test module's Go directive `1.25.0` → `1.26.0` (required by terratest v1.x).
+- Added a `Go Checks` CI job (`go build`, `go vet`, `golangci-lint`) for the
+  `test/` module, and enabled CI on pushes to `develop`.
+- Bumped GitHub Actions to their Node 24 runtimes (`checkout@v5`, `setup-go@v6`,
+  `setup-terraform@v4`, `setup-tflint@v6`, `gitleaks-action@v3`,
+  `golangci-lint-action@v9`) ahead of the Node 20 removal on 2026-09-16.
+- Regenerated `README.md` / example READMEs via terraform-docs (formatting only).
+
 ## [1.0.0](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v0.0.9...v1.0.0)  -  (2026-02-25)
 
 ### Breaking Changes
