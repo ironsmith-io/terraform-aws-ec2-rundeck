@@ -79,10 +79,12 @@ func TestRundeck(t *testing.T) {
 	})
 
 	// Phase 2: Poll cloud-init status (non-blocking) until done
-	// cloud-init installs Java, PostgreSQL, Rundeck, nginx, etc. and can take 10-15 minutes
+	// cloud-init runs a full `dnf upgrade` (package_upgrade: true) plus installs
+	// Java, PostgreSQL, Rundeck, nginx, etc. On a good run this is ~6 min, but a
+	// slow Rocky mirror can push it well past 15 min, so budget 25 min (100 x 15s).
 	// Note: cloud-init 24.x returns non-zero exit for "degraded done" (schema warnings),
 	// so we check the output text rather than relying on exit code
-	retry.DoWithRetryContext(t, ctx, "Wait for cloud-init to finish", 60, 15*time.Second, func() (string, error) {
+	retry.DoWithRetryContext(t, ctx, "Wait for cloud-init to finish", 100, 15*time.Second, func() (string, error) {
 		output, err := ssh.CheckSSHCommandContextE(t, ctx, &host, "sudo cloud-init status 2>&1 || true")
 		if err != nil {
 			return "", err
