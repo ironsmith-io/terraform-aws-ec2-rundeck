@@ -26,6 +26,9 @@ All notable changes to this project will be documented in this file.
 - Bumped the test module's Go directive `1.25.0` → `1.26.0` (required by terratest v1.x).
 - Added a `Go Checks` CI job (`go build`, `go vet`, `golangci-lint`) for the
   `test/` module, and enabled CI on pushes to `develop`.
+- Bumped GitHub Actions to their Node 24 runtimes (`checkout@v5`, `setup-go@v6`,
+  `setup-terraform@v4`, `setup-tflint@v6`, `gitleaks-action@v3`,
+  `golangci-lint-action@v9`) ahead of the Node 20 removal on 2026-09-16.
 - Regenerated `README.md` / example READMEs via terraform-docs (formatting only).
 
 ## [1.0.0](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v0.0.9...v1.0.0)  -  (2026-02-25)
