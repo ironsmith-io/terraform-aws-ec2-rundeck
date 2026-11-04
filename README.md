@@ -252,6 +252,10 @@ make test-all          # Everything
 - [minimal](examples/minimal) - Minimal deployment with SSH access only
 - [ssm-only](examples/ssm-only) - SSM Session Manager access, no SSH
 
+## Maintainers
+
+Maintained by [IRONSmith](https://ironsmith.io/): DevOps, AWS & Terraform consulting and contract work, remote or on-site in San Diego County.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
