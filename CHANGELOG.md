@@ -2,21 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.2](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v1.0.1...v1.0.2)  -  (2026-07-28)
+## [1.0.2](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v1.0.1...v1.0.2)  -  (2026-11-04)
 
-> Maintenance release. No changes to the module itself.
+> Maintenance release. No changes to the module itself (no `.tf` changes).
 
 ### Security
 
 - Bumped `jackc/pgx/v5` (test-only) `v5.9.0` → `v5.9.2` to resolve the remaining
   Dependabot alert: CVE-2026-41889 / GHSA-j88v-2chj-qfwx (low-severity SQL
   injection via dollar-quoted string literals under the simple protocol).
+- Bumped `github.com/klauspost/compress` (test-only, indirect) `v1.16.5` → `v1.18.7`
+  to resolve a high-severity advisory (integer overflow / out-of-bounds write in `s2`). (#10)
 
 ### Added
 
 - `SECURITY.md` documenting supported versions and private vulnerability reporting.
-- `.github/dependabot.yml` for automated weekly `gomod` (test suite) and
-  `github-actions` dependency updates, grouped one PR per ecosystem.
+- `.github/dependabot.yml` for **monthly** `gomod` (test suite) and `github-actions`
+  version updates, grouped one PR per ecosystem. Security updates are not grouped
+  or scheduled and open as soon as an advisory lands. Commits use Conventional
+  Commits prefixes `build(deps):` (Go) and `ci(deps):` (Actions).
+- A Maintainers section in the README.
+
+### Changed
+
+- Bumped `github.com/stretchr/testify` (test-only) `v1.11.1` → `v1.12.1`. (#9)
+- Bumped GitHub Actions `actions/checkout` `v5` → `v7` and `actions/setup-go`
+  `v6` → `v7`. (#8)
+- CI now runs on pushes to `main` only (the `develop` branch is retired).
 
 ## [1.0.1](https://github.com/ironsmith-io/terraform-aws-ec2-rundeck/compare/v1.0.0...v1.0.1)  -  (2026-07-28)
 
